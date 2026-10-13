@@ -7,44 +7,66 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="TeekTeek" />
   <title>TeekTeek</title>
+
+  <!-- Dynamic Illustrated iOS Home Screen Icon -->
+  <link id="appleTouchIcon" rel="apple-touch-icon" href="" />
+  <link id="favIcon" rel="icon" type="image/png" href="" />
+
+  <!-- Google Fonts: Inter (Global) & Doto (Nothing OS Dotted Font for Start Button) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Doto:wght@700..900&family=Inter:wght@400;500;600;700;800&family=VT323&display=swap" rel="stylesheet">
+
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root {
       --bg-primary: #000000;
       --bg-card: #161618;
       --bg-elevated: #212124;
+      --text-primary: #f5f5f7;
+      --text-secondary: #9ca3af;
+      --text-muted: #6b7280;
+      --border-subtle: rgba(255, 255, 255, 0.065);
+      --glass-bg: rgba(18, 18, 20, 0.84);
       --accent: #ff3b30;
-      --accent-soft: rgba(255, 59, 48, 0.18);
+      --accent-soft: rgba(255, 59, 48, 0.16);
       --accent-glow: rgba(255, 59, 48, 0.38);
       --heat-0: #262629;
       --heat-1: #fde2e1;
       --heat-2: #f89892;
       --heat-3: #ef5349;
       --heat-4: #ff3b30;
+      --ring-track: rgba(255, 255, 255, 0.07);
+      --empty-slot: #1e1e22;
     }
 
     * {
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
     body {
       background-color: var(--bg-primary);
-      color: #f5f5f7;
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "SF Pro Rounded", system-ui, sans-serif;
+      color: var(--text-primary);
       -webkit-tap-highlight-color: transparent;
       user-select: none;
       overscroll-behavior-y: none;
       letter-spacing: -0.015em;
+      transition: background-color 0.25s ease, color 0.25s ease;
     }
 
-    .sf-rounded {
-      font-family: ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont, sans-serif;
+    /* Nothing OS Dotted Font Class */
+    .nothing-dotted-font {
+      font-family: 'Doto', 'VT323', monospace !important;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
     }
 
     .ios-glass {
-      background: rgba(18, 18, 20, 0.82);
+      background: var(--glass-bg);
       backdrop-filter: saturate(180%) blur(25px);
       -webkit-backdrop-filter: saturate(180%) blur(25px);
     }
@@ -52,38 +74,44 @@
     .card-surface {
       background-color: var(--bg-card);
       border-radius: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.055);
+      border: 1px solid var(--border-subtle);
+      transition: background-color 0.25s ease, border-color 0.25s ease;
     }
 
     .elevated-surface {
       background-color: var(--bg-elevated);
+      transition: background-color 0.25s ease;
     }
+
+    .theme-text-primary { color: var(--text-primary); }
+    .theme-text-secondary { color: var(--text-secondary); }
+    .theme-text-muted { color: var(--text-muted); }
 
     .accent-bg { background-color: var(--accent); }
     .accent-text { color: var(--accent); }
     .accent-border { border-color: var(--accent); }
     .accent-soft-bg { background-color: var(--accent-soft); }
 
-    /* Apple Premium Tactile Start Button */
-    .apple-start-btn {
-      background: linear-gradient(180deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 100%), var(--accent);
-      box-shadow: 0 10px 28px -6px var(--accent-glow), inset 0 1px 1px rgba(255, 255, 255, 0.35);
-      transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+    /* Red Nothing-OS Start Button with Black Dotted Text */
+    .nothing-start-btn {
+      background-color: #ff3b30;
+      color: #000000;
+      box-shadow: 0 10px 26px -6px rgba(255, 59, 48, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.35);
+      transition: transform 0.16s cubic-bezier(0.25, 0.8, 0.25, 1), filter 0.16s ease;
     }
-    .apple-start-btn:active {
-      transform: scale(0.96);
+    .nothing-start-btn:active {
+      transform: scale(0.95);
       filter: brightness(0.92);
     }
 
     .apple-secondary-btn {
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-primary);
       transition: all 0.2s ease;
     }
     .apple-secondary-btn:active {
       transform: scale(0.95);
-      background: rgba(255, 255, 255, 0.14);
     }
 
     /* Non-scrolling 25-column Year Grid */
@@ -108,19 +136,19 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between pb-28">
 
-  <!-- TOP APPLE HEADER -->
-  <header class="sticky top-0 z-30 ios-glass border-b border-white/[0.07] px-5 py-3.5 flex items-center justify-between">
+  <!-- TOP HEADER -->
+  <header class="sticky top-0 z-30 ios-glass border-b border-white/[0.07] px-5 py-3.5 flex items-center justify-between" style="border-color: var(--border-subtle);">
     <div class="flex items-center gap-2.5">
       <div class="w-8 h-8 rounded-full accent-bg flex items-center justify-center shadow-sm">
         <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z" />
         </svg>
       </div>
-      <h1 id="headerTitle" class="text-[19px] font-bold tracking-tight text-white">TeekTeek</h1>
+      <h1 id="headerTitle" class="text-[19px] font-bold tracking-tight theme-text-primary">TeekTeek</h1>
     </div>
 
     <div class="flex items-center gap-2">
-      <button id="ambientBtn" type="button" class="px-3 py-1.5 rounded-full apple-secondary-btn text-xs font-medium text-gray-300 flex items-center gap-1.5 cursor-pointer">
+      <button id="ambientBtn" type="button" class="px-3 py-1.5 rounded-full apple-secondary-btn text-xs font-medium flex items-center gap-1.5 cursor-pointer">
         <span class="text-xs">🌧️</span>
         <span id="ambientText" class="text-[11px] font-semibold">Sound</span>
       </button>
@@ -133,30 +161,29 @@
     <!-- ================= TAB 1: FOCUS TIMER VIEW ================= -->
     <section id="view-timer" class="space-y-6">
 
-      <!-- Apple Segmented Mode Control -->
+      <!-- Mode Selector -->
       <div class="card-surface p-1 rounded-full flex max-w-[260px] mx-auto">
-        <button id="modePomoBtn" type="button" class="flex-1 py-1.5 text-xs font-semibold rounded-full elevated-surface text-white shadow-sm transition cursor-pointer">
+        <button id="modePomoBtn" type="button" class="flex-1 py-1.5 text-xs font-semibold rounded-full elevated-surface theme-text-primary shadow-sm transition cursor-pointer">
           Pomodoro
         </button>
-        <button id="modeStopBtn" type="button" class="flex-1 py-1.5 text-xs font-semibold rounded-full text-gray-400 hover:text-white transition cursor-pointer">
+        <button id="modeStopBtn" type="button" class="flex-1 py-1.5 text-xs font-semibold rounded-full theme-text-secondary transition cursor-pointer">
           Stopwatch
         </button>
       </div>
 
-      <!-- Task / Tag Selector Pill -->
+      <!-- Tag Selector Pill -->
       <div class="flex flex-col items-center">
-        <button id="openTaskBtn" type="button" class="px-4 py-1.5 rounded-full card-surface flex items-center gap-2 text-xs font-semibold text-gray-200 hover:bg-white/[0.04] transition cursor-pointer">
-          <span id="activeTaskDot" class="w-2 h-2 rounded-full accent-bg"></span>
+        <button id="openTaskBtn" type="button" class="px-4 py-1.5 rounded-full card-surface flex items-center gap-2 text-xs font-semibold theme-text-primary hover:opacity-90 transition cursor-pointer">
+          <span id="activeTaskDot" class="w-2.5 h-2.5 rounded-full accent-bg"></span>
           <span id="activeTaskLabel">Deep Work</span>
-          <svg class="w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 9l-7 7-7-7"/></svg>
+          <svg class="w-3.5 h-3.5 theme-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 9l-7 7-7-7"/></svg>
         </button>
       </div>
 
-      <!-- Apple Watch Ultra / Fitness Inspired Circular Dial -->
+      <!-- Circular Timer Dial -->
       <div class="relative w-72 h-72 mx-auto flex items-center justify-center">
         <svg class="w-full h-full -rotate-90" viewBox="0 0 260 260">
-          <!-- Subtle Tick Marks Ring -->
-          <circle cx="130" cy="130" r="114" stroke="rgba(255,255,255,0.06)" stroke-width="12" fill="none" />
+          <circle cx="130" cy="130" r="114" stroke="var(--ring-track)" stroke-width="12" fill="none" />
           <circle id="timerRing" cx="130" cy="130" r="114" stroke="var(--accent)" stroke-width="12" stroke-linecap="round" fill="none"
             stroke-dasharray="716.28" stroke-dashoffset="0" class="transition-all duration-300" />
         </svg>
@@ -164,35 +191,32 @@
           <span id="phaseBadge" class="px-3 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-widest accent-soft-bg accent-text mb-2">
             FOCUS
           </span>
-          <div id="timeDisplay" class="sf-rounded text-[58px] leading-none font-bold tracking-tight tabular-nums text-white">
+          <div id="timeDisplay" class="text-[56px] leading-none font-extrabold tracking-tight tabular-nums theme-text-primary">
             25:00
           </div>
-          <p id="subStatusText" class="text-xs font-medium text-gray-500 mt-2.5">25 min goal</p>
+          <p id="subStatusText" class="text-xs font-medium theme-text-muted mt-2.5">25 min goal</p>
         </div>
       </div>
 
       <!-- Pomodoro Duration Quick Presets -->
       <div id="pomoPresets" class="flex justify-center gap-2">
-        <button type="button" data-mins="25" class="pomo-preset px-3.5 py-1.5 rounded-full card-surface border accent-border text-xs font-semibold text-white transition cursor-pointer">25m</button>
-        <button type="button" data-mins="45" class="pomo-preset px-3.5 py-1.5 rounded-full card-surface text-xs font-semibold text-gray-400 transition cursor-pointer">45m</button>
-        <button type="button" data-mins="60" class="pomo-preset px-3.5 py-1.5 rounded-full card-surface text-xs font-semibold text-gray-400 transition cursor-pointer">60m</button>
-        <button type="button" data-mins="90" class="pomo-preset px-3.5 py-1.5 rounded-full card-surface text-xs font-semibold text-gray-400 transition cursor-pointer">90m</button>
+        <button type="button" data-mins="25" class="pomo-preset px-3.5 py-1.5 rounded-full card-surface border accent-border text-xs font-semibold theme-text-primary transition cursor-pointer">25m</button>
+        <button type="button" data-mins="45" class="pomo-preset px-3.5 py-1.5 rounded-full card-surface text-xs font-semibold theme-text-secondary transition cursor-pointer">45m</button>
+        <button type="button" data-mins="60" class="pomo-preset px-3.5 py-1.5 rounded-full card-surface text-xs font-semibold theme-text-secondary transition cursor-pointer">60m</button>
+        <button type="button" data-mins="90" class="pomo-preset px-3.5 py-1.5 rounded-full card-surface text-xs font-semibold theme-text-secondary transition cursor-pointer">90m</button>
       </div>
 
-      <!-- Redesigned Apple Tactile Pill Controls -->
+      <!-- Red Button with Black Nothing OS Dotted Font ("Start") -->
       <div class="flex items-center justify-center gap-3.5 pt-2">
-        <button id="lapBtn" type="button" class="hidden w-14 h-14 rounded-full apple-secondary-btn text-gray-200 font-semibold text-xs flex items-center justify-center cursor-pointer">
+        <button id="lapBtn" type="button" class="hidden w-14 h-14 rounded-full apple-secondary-btn font-semibold text-xs flex items-center justify-center cursor-pointer">
           Lap
         </button>
 
-        <button id="mainActionBtn" type="button" class="h-14 px-10 rounded-full apple-start-btn text-white font-bold text-[16px] tracking-wide flex items-center justify-center gap-2.5 cursor-pointer min-w-[180px]">
-          <svg id="mainActionIcon" class="w-5 h-5 fill-current" viewBox="0 0 24 24">
-            <path d="M8 5.14v14l11-7-11-7z" />
-          </svg>
-          <span id="mainActionText">Start Focus</span>
+        <button id="mainActionBtn" type="button" class="h-14 px-12 rounded-full nothing-start-btn flex items-center justify-center cursor-pointer min-w-[176px]">
+          <span id="mainActionText" class="nothing-dotted-font text-[22px] leading-none">Start</span>
         </button>
 
-        <button id="finishBtn" type="button" class="hidden w-14 h-14 rounded-full apple-secondary-btn text-gray-200 hover:text-red-400 font-semibold text-xs flex items-center justify-center cursor-pointer" title="Finish & Save">
+        <button id="finishBtn" type="button" class="hidden w-14 h-14 rounded-full apple-secondary-btn hover:text-red-400 font-semibold text-xs flex items-center justify-center cursor-pointer" title="Finish & Save">
           <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
             <rect x="6" y="6" width="12" height="12" rx="2" />
           </svg>
@@ -201,61 +225,57 @@
 
       <!-- Stopwatch Laps Container -->
       <div id="lapsContainer" class="hidden card-surface p-3.5 max-h-36 overflow-y-auto space-y-1.5">
-        <div class="text-[10px] font-bold uppercase tracking-wider text-gray-500 px-1">Lap Splits</div>
+        <div class="text-[10px] font-bold uppercase tracking-wider theme-text-muted px-1">Lap Splits</div>
         <div id="lapsList" class="space-y-1 text-xs"></div>
       </div>
 
-      <!-- Today's Summary Pill Card -->
+      <!-- Today's Summary Card -->
       <div class="card-surface p-4 flex items-center justify-between">
         <div>
-          <p class="text-[11px] text-gray-400 font-medium">Today's Focus</p>
-          <div id="miniTodayHours" class="text-xl font-bold text-white mt-0.5">0<span class="text-xs font-normal text-gray-400 ml-0.5">h</span> 0<span class="text-xs font-normal text-gray-400 ml-0.5">m</span></div>
+          <p class="text-[11px] theme-text-secondary font-medium">Today's Focus</p>
+          <div id="miniTodayHours" class="text-xl font-bold theme-text-primary mt-0.5">0<span class="text-xs font-normal theme-text-secondary ml-0.5">h</span> 0<span class="text-xs font-normal theme-text-secondary ml-0.5">m</span></div>
         </div>
         <div class="text-right">
-          <p class="text-[11px] text-gray-400 font-medium">Today's Pomos</p>
+          <p class="text-[11px] theme-text-secondary font-medium">Today's Pomos</p>
           <div id="miniTodayPomos" class="text-xl font-bold accent-text mt-0.5">0</div>
         </div>
       </div>
     </section>
 
 
-    <!-- ================= TAB 2: FOCUS STATISTICS (EXACT REFERENCE MATCH) ================= -->
+    <!-- ================= TAB 2: FOCUS STATISTICS ================= -->
     <section id="view-stats" class="hidden space-y-3.5 pb-8">
 
-      <!-- 1. TOP 4 SUMMARY CARDS (2x2 Grid) -->
+      <!-- 1. TOP 4 SUMMARY CARDS -->
       <div class="grid grid-cols-2 gap-3">
-        <!-- Today's Pomo -->
         <div class="card-surface p-4">
-          <div class="text-[13px] font-semibold text-white">Today's Pomo</div>
-          <div class="text-[11px] text-gray-500 mt-0.5">
+          <div class="text-[13px] font-semibold theme-text-primary">Today's Pomo</div>
+          <div class="text-[11px] theme-text-muted mt-0.5">
             <span id="pomoYesterdayDelta">0 from yesterday</span>
-            <span class="text-emerald-400 font-bold ml-0.5">↑</span>
+            <span class="text-emerald-500 font-bold ml-0.5">↑</span>
           </div>
-          <div id="statTodayPomos" class="sf-rounded text-3xl font-bold accent-text mt-2">0</div>
+          <div id="statTodayPomos" class="text-3xl font-bold accent-text mt-2">0</div>
         </div>
 
-        <!-- Today's Focus (h) -->
         <div class="card-surface p-4">
-          <div class="text-[13px] font-semibold text-white">Today's Focus (h)</div>
-          <div class="text-[11px] text-gray-500 mt-0.5">
+          <div class="text-[13px] font-semibold theme-text-primary">Today's Focus (h)</div>
+          <div class="text-[11px] theme-text-muted mt-0.5">
             <span id="focusYesterdayDelta">0h0m from yesterday</span>
-            <span class="text-emerald-400 font-bold ml-0.5">↑</span>
+            <span class="text-emerald-500 font-bold ml-0.5">↑</span>
           </div>
-          <div id="statTodayDuration" class="sf-rounded text-3xl font-bold accent-text mt-2">
+          <div id="statTodayDuration" class="text-3xl font-bold accent-text mt-2">
             0<span class="text-sm font-medium ml-0.5">h</span> 0<span class="text-sm font-medium ml-0.5">m</span>
           </div>
         </div>
 
-        <!-- Total Pomos -->
         <div class="card-surface p-4">
-          <div class="text-[13px] font-semibold text-white">Total Pomos</div>
-          <div id="statTotalPomos" class="sf-rounded text-2xl font-bold accent-text mt-2">0</div>
+          <div class="text-[13px] font-semibold theme-text-primary">Total Pomos</div>
+          <div id="statTotalPomos" class="text-2xl font-bold accent-text mt-2">0</div>
         </div>
 
-        <!-- Total Focus Duration -->
         <div class="card-surface p-4">
-          <div class="text-[13px] font-semibold text-white truncate">Total Focus Duration</div>
-          <div id="statTotalDuration" class="sf-rounded text-2xl font-bold accent-text mt-2">
+          <div class="text-[13px] font-semibold theme-text-primary truncate">Total Focus Duration</div>
+          <div id="statTotalDuration" class="text-2xl font-bold accent-text mt-2">
             0<span class="text-sm font-medium ml-0.5">h</span> 0<span class="text-sm font-medium ml-0.5">m</span>
           </div>
         </div>
@@ -264,124 +284,112 @@
       <!-- 2. FOCUS RECORD TIMELINE CARD -->
       <div class="card-surface p-4">
         <div class="flex items-center justify-between mb-3">
-          <h2 class="text-[15px] font-bold text-white">Focus Record</h2>
+          <h2 class="text-[15px] font-bold theme-text-primary">Focus Record</h2>
           <button id="manualAddBtn" type="button" class="text-xl font-light accent-text leading-none px-1.5 py-0.5 rounded-lg hover:bg-white/5 cursor-pointer" title="Add Record">+</button>
         </div>
         <div id="focusRecordTimeline" class="space-y-3 max-h-52 overflow-y-auto pr-1"></div>
       </div>
 
-      <!-- 3. DETAILS CARD (Day | Week | Month | Custom + Ring + Focus Ranking) -->
+      <!-- 3. DETAILS CARD -->
       <div class="card-surface p-4">
         <div class="flex items-center justify-between mb-3">
-          <h2 class="text-[15px] font-bold text-white">Details</h2>
+          <h2 class="text-[15px] font-bold theme-text-primary">Details</h2>
           <div class="flex items-center gap-2 text-xs">
             <button id="detPrevBtn" type="button" class="accent-text font-bold px-1 cursor-pointer">&lt;</button>
-            <span id="detPeriodLabel" class="text-white font-medium min-w-[54px] text-center">Today</span>
+            <span id="detPeriodLabel" class="theme-text-primary font-medium min-w-[54px] text-center">Today</span>
             <button id="detNextBtn" type="button" class="accent-text font-bold px-1 cursor-pointer">&gt;</button>
           </div>
         </div>
 
-        <!-- Day / Week / Month / Custom Pill Selector -->
         <div class="grid grid-cols-4 gap-1 mb-5 text-center text-xs">
           <button type="button" data-det="day" class="det-tab-btn py-1.5 rounded-full accent-soft-bg accent-text font-semibold cursor-pointer">Day</button>
-          <button type="button" data-det="week" class="det-tab-btn py-1.5 rounded-full text-gray-500 font-medium cursor-pointer">Week</button>
-          <button type="button" data-det="month" class="det-tab-btn py-1.5 rounded-full text-gray-500 font-medium cursor-pointer">Month</button>
-          <button type="button" data-det="year" class="det-tab-btn py-1.5 rounded-full text-gray-500 font-medium cursor-pointer">Custom</button>
+          <button type="button" data-det="week" class="det-tab-btn py-1.5 rounded-full theme-text-muted font-medium cursor-pointer">Week</button>
+          <button type="button" data-det="month" class="det-tab-btn py-1.5 rounded-full theme-text-muted font-medium cursor-pointer">Month</button>
+          <button type="button" data-det="year" class="det-tab-btn py-1.5 rounded-full theme-text-muted font-medium cursor-pointer">Custom</button>
         </div>
 
-        <!-- Center Donut Ring -->
         <div class="relative w-44 h-44 mx-auto my-2 flex items-center justify-center">
           <svg id="donutSvg" class="w-full h-full -rotate-90" viewBox="0 0 120 120"></svg>
           <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
-            <span id="donutCenterLabel" class="text-sm font-medium text-gray-400">No Data</span>
+            <span id="donutCenterLabel" class="text-sm font-medium theme-text-secondary">No Data</span>
           </div>
         </div>
 
-        <!-- Focus Ranking Footer -->
-        <div class="mt-4 pt-3 border-t border-white/[0.06]">
+        <div class="mt-4 pt-3 border-t" style="border-color: var(--border-subtle);">
           <div class="flex items-center justify-between mb-2">
-            <span class="text-xs font-bold text-white">Focus Ranking</span>
-            <span class="text-[11px] text-gray-400">List ⌄</span>
+            <span class="text-xs font-bold theme-text-primary">Focus Ranking</span>
+            <span class="text-[11px] theme-text-secondary">List ⌄</span>
           </div>
           <div id="taskBreakdownList" class="space-y-2.5 text-xs"></div>
         </div>
       </div>
 
-      <!-- 4. TRENDS CARD (Week | Month | Year + Su..Sa + Daily Average) -->
+      <!-- 4. TRENDS CARD -->
       <div class="card-surface p-4">
         <div class="flex items-center justify-between mb-3">
-          <h2 class="text-[15px] font-bold text-white">Trends</h2>
+          <h2 class="text-[15px] font-bold theme-text-primary">Trends</h2>
           <div class="flex items-center gap-2 text-xs">
             <button id="trendPrevBtn" type="button" class="accent-text font-bold px-1 cursor-pointer">&lt;</button>
-            <span id="trendPeriodLabel" class="text-white font-medium">This Week</span>
+            <span id="trendPeriodLabel" class="theme-text-primary font-medium">This Week</span>
             <button id="trendNextBtn" type="button" class="accent-text font-bold px-1 cursor-pointer">&gt;</button>
           </div>
         </div>
 
         <div class="grid grid-cols-3 gap-1 max-w-[240px] mb-4 text-center text-xs">
           <button type="button" data-trend="week" class="trend-tab-btn py-1.5 rounded-full accent-soft-bg accent-text font-semibold cursor-pointer">Week</button>
-          <button type="button" data-trend="month" class="trend-tab-btn py-1.5 rounded-full text-gray-500 font-medium cursor-pointer">Month</button>
-          <button type="button" data-trend="year" class="trend-tab-btn py-1.5 rounded-full text-gray-500 font-medium cursor-pointer">Year</button>
+          <button type="button" data-trend="month" class="trend-tab-btn py-1.5 rounded-full theme-text-muted font-medium cursor-pointer">Month</button>
+          <button type="button" data-trend="year" class="trend-tab-btn py-1.5 rounded-full theme-text-muted font-medium cursor-pointer">Year</button>
         </div>
 
         <div id="trendsChartArea" class="relative h-40 pt-4 pb-1 flex items-end justify-between gap-2"></div>
 
-        <div class="flex items-center justify-between mt-3 pt-3 border-t border-white/[0.06]">
-          <span class="text-xs text-gray-400">Daily Average</span>
-          <div id="trendDailyAvg" class="sf-rounded text-lg font-bold text-white">0<span class="text-xs font-normal text-gray-400 ml-0.5">m</span></div>
+        <div class="flex items-center justify-between mt-3 pt-3 border-t" style="border-color: var(--border-subtle);">
+          <span class="text-xs theme-text-secondary">Daily Average</span>
+          <div id="trendDailyAvg" class="text-lg font-bold theme-text-primary">0<span class="text-xs font-normal theme-text-secondary ml-0.5">m</span></div>
         </div>
       </div>
 
-      <!-- 5. TIMELINE CARD (Sun-Sat x 00:00-18:00 Time-Of-Day Schedule Grid) -->
+      <!-- 5. TIMELINE CARD (No Crown) -->
       <div class="card-surface p-4">
         <div class="flex items-center justify-between mb-3">
-          <h2 class="text-[15px] font-bold text-white flex items-center gap-1.5">
-            <span>Timeline</span>
-            <span class="text-amber-400 text-xs">👑</span>
-          </h2>
+          <h2 class="text-[15px] font-bold theme-text-primary">Timeline</h2>
           <div class="flex items-center gap-2 text-xs">
             <button id="tlPrevBtn" type="button" class="accent-text font-bold px-1 cursor-pointer">&lt;</button>
-            <span id="tlPeriodLabel" class="text-white font-medium">This Week</span>
+            <span id="tlPeriodLabel" class="theme-text-primary font-medium">This Week</span>
             <button id="tlNextBtn" type="button" class="accent-text font-bold px-1 cursor-pointer">&gt;</button>
           </div>
         </div>
 
         <div class="flex gap-2 pt-2">
-          <!-- Y-axis Hours -->
-          <div class="flex flex-col justify-between text-[10px] text-gray-500 h-40 pb-5 pr-1 font-mono">
+          <div class="flex flex-col justify-between text-[10px] theme-text-muted h-40 pb-5 pr-1">
             <span>00:00</span>
             <span>06:00</span>
             <span>12:00</span>
             <span>18:00</span>
           </div>
 
-          <!-- 7 Day Columns -->
           <div class="flex-1">
-            <div id="timelineScheduleGrid" class="grid grid-cols-7 gap-1.5 h-36 relative border-b border-white/[0.06]"></div>
-            <div class="grid grid-cols-7 gap-1.5 text-center text-[10px] text-gray-500 pt-2">
+            <div id="timelineScheduleGrid" class="grid grid-cols-7 gap-1.5 h-36 relative border-b" style="border-color: var(--border-subtle);"></div>
+            <div class="grid grid-cols-7 gap-1.5 text-center text-[10px] theme-text-muted pt-2">
               <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 6. MOST FOCUSED TIME CARD (24-Hour Vertical Bar Chart) -->
+      <!-- 6. MOST FOCUSED TIME CARD (No Crown) -->
       <div class="card-surface p-4">
         <div class="flex items-center justify-between mb-3">
-          <h2 class="text-[15px] font-bold text-white flex items-center gap-1.5">
-            <span>Most Focused Time</span>
-            <span class="text-amber-400 text-xs">👑</span>
-          </h2>
+          <h2 class="text-[15px] font-bold theme-text-primary">Most Focused Time</h2>
           <div class="flex items-center gap-2 text-xs">
             <button id="mftPrevBtn" type="button" class="accent-text font-bold px-1 cursor-pointer">&lt;</button>
-            <span id="mftMonthLabel" class="text-white font-medium">Oct</span>
+            <span id="mftMonthLabel" class="theme-text-primary font-medium">Oct</span>
             <button id="mftNextBtn" type="button" class="accent-text font-bold px-1 cursor-pointer">&gt;</button>
           </div>
         </div>
 
         <div class="flex gap-2 pt-2">
-          <!-- Y-axis Duration Scale -->
-          <div id="mftYAxis" class="flex flex-col justify-between text-[10px] text-gray-500 h-40 pb-5 pr-1 text-right min-w-[34px]">
+          <div id="mftYAxis" class="flex flex-col justify-between text-[10px] theme-text-muted h-40 pb-5 pr-1 text-right min-w-[34px]">
             <span>1h32m</span>
             <span>1h9m</span>
             <span>46m</span>
@@ -389,10 +397,9 @@
             <span>0m</span>
           </div>
 
-          <!-- 24 Hour Slots -->
           <div class="flex-1">
-            <div id="mftBarsGrid" class="grid grid-cols-24 gap-[3px] h-36 items-end" style="grid-template-columns: repeat(24, minmax(0, 1fr));"></div>
-            <div class="flex justify-between text-[10px] text-gray-500 pt-2">
+            <div id="mftBarsGrid" class="grid gap-[3px] h-36 items-end" style="grid-template-columns: repeat(24, minmax(0, 1fr));"></div>
+            <div class="flex justify-between text-[10px] theme-text-muted pt-2">
               <span>00:00</span>
               <span>04:00</span>
               <span>08:00</span>
@@ -404,39 +411,32 @@
         </div>
       </div>
 
-      <!-- 7. YEAR GRIDS CARD (Non-Scrolling Full-Width Matrix) -->
+      <!-- 7. YEAR GRIDS CARD (No Crown, Non-Scrolling) -->
       <div class="card-surface p-4">
         <div class="flex items-center justify-between mb-2">
-          <h2 class="text-[15px] font-bold text-white flex items-center gap-1.5">
-            <span>Year Grids</span>
-            <span class="text-amber-400 text-xs">👑</span>
-          </h2>
+          <h2 class="text-[15px] font-bold theme-text-primary">Year Grids</h2>
           <div class="flex items-center gap-2 text-xs">
             <button id="prevYearBtn" type="button" class="accent-text font-bold px-1 cursor-pointer">&lt;</button>
-            <span id="heatmapYearLabel" class="text-white font-medium">2026</span>
+            <span id="heatmapYearLabel" class="theme-text-primary font-medium">2026</span>
             <button id="nextYearBtn" type="button" class="accent-text font-bold px-1 cursor-pointer">&gt;</button>
           </div>
         </div>
 
-        <!-- Quarter Month Labels (Jan, Apr, Jul, Oct) -->
-        <div class="grid grid-cols-4 text-[10px] text-gray-500 mb-1.5 mt-2">
+        <div class="grid grid-cols-4 text-[10px] theme-text-muted mb-1.5 mt-2">
           <span>Jan</span>
           <span>Apr</span>
           <span>Jul</span>
           <span>Oct</span>
         </div>
 
-        <!-- Non-Scrolling 25x15 Full-Year Matrix -->
         <div id="heatmapGrid" class="year-grid-matrix"></div>
 
-        <!-- Selected Day Inspector -->
-        <div id="heatmapTooltip" class="text-[11px] text-gray-400 mt-2.5 flex items-center justify-between">
+        <div id="heatmapTooltip" class="text-[11px] theme-text-secondary mt-2.5 flex items-center justify-between">
           <span>Tap any square to inspect date</span>
-          <span id="yearActiveDaysCount" class="text-gray-300 font-medium">0 active days</span>
+          <span id="yearActiveDaysCount" class="theme-text-primary font-medium">0 active days</span>
         </div>
 
-        <!-- Exact 5-Tier Legend: 0m | 0-1h | 1h-3h | 3h-5h | >5h -->
-        <div class="flex items-center justify-between mt-3 pt-2.5 border-t border-white/[0.06] text-[10px] text-gray-400">
+        <div class="flex items-center justify-between mt-3 pt-2.5 border-t text-[10px] theme-text-secondary" style="border-color: var(--border-subtle);">
           <span class="flex items-center gap-1"><i class="w-2.5 h-2.5 rounded-[2px] heat-0 inline-block"></i>0m</span>
           <span class="flex items-center gap-1"><i class="w-2.5 h-2.5 rounded-[2px] heat-1 inline-block"></i>0-1h</span>
           <span class="flex items-center gap-1"><i class="w-2.5 h-2.5 rounded-[2px] heat-2 inline-block"></i>1h-3h</span>
@@ -451,42 +451,54 @@
     <!-- ================= TAB 3: SETTINGS & THEMES ================= -->
     <section id="view-settings" class="hidden space-y-4 pb-8">
 
+      <!-- Dark / Light Mode Toggle -->
+      <div class="card-surface p-4 space-y-3">
+        <div>
+          <h2 class="text-[15px] font-bold theme-text-primary">Display Mode</h2>
+          <p class="text-xs theme-text-secondary mt-0.5">Switch between OLED Black, Midnight Dark, and Light Mode.</p>
+        </div>
+        <div class="grid grid-cols-3 gap-2">
+          <button id="bgOledBtn" type="button" class="py-2.5 rounded-xl elevated-surface border text-xs font-semibold cursor-pointer">OLED Black</button>
+          <button id="bgCarbonBtn" type="button" class="py-2.5 rounded-xl elevated-surface border text-xs font-semibold cursor-pointer">Dark Slate</button>
+          <button id="bgLightBtn" type="button" class="py-2.5 rounded-xl elevated-surface border text-xs font-semibold cursor-pointer">Light Mode</button>
+        </div>
+      </div>
+
+      <!-- Manage Tags & Colors Shortcut -->
+      <div class="card-surface p-4 flex items-center justify-between">
+        <div>
+          <h2 class="text-[15px] font-bold theme-text-primary">Manage Tags & Colors</h2>
+          <p class="text-xs theme-text-secondary mt-0.5">Create, rename, recolor, or delete your focus tags.</p>
+        </div>
+        <button id="settingsManageTagsBtn" type="button" class="px-3.5 py-2 rounded-xl accent-bg text-white text-xs font-bold cursor-pointer">
+          Edit Tags
+        </button>
+      </div>
+
       <!-- Expanded 10 Color Themes Picker -->
       <div class="card-surface p-4 space-y-3">
         <div>
-          <h2 class="text-[15px] font-bold text-white">Appearance & Analytics Theme</h2>
-          <p class="text-xs text-gray-400 mt-0.5">Customize the accent color and heatmap shades across TeekTeek.</p>
+          <h2 class="text-[15px] font-bold theme-text-primary">Analytics & Accent Theme</h2>
+          <p class="text-xs theme-text-secondary mt-0.5">Choose the color palette for your charts and year grids.</p>
         </div>
 
         <div id="themeSelectorGrid" class="grid grid-cols-2 gap-2.5 pt-1"></div>
       </div>
 
-      <!-- Surface Darkness Mode -->
-      <div class="card-surface p-4 space-y-3">
-        <div>
-          <h2 class="text-[15px] font-bold text-white">Display Surface</h2>
-          <p class="text-xs text-gray-400 mt-0.5">Choose between True OLED Black and Apple Midnight Dark.</p>
-        </div>
-        <div class="flex gap-2">
-          <button id="bgOledBtn" type="button" class="flex-1 py-2.5 rounded-xl elevated-surface border accent-border text-xs font-semibold text-white cursor-pointer">True OLED Black</button>
-          <button id="bgCarbonBtn" type="button" class="flex-1 py-2.5 rounded-xl elevated-surface border border-white/5 text-xs font-semibold text-gray-400 cursor-pointer">Midnight Slate</button>
-        </div>
-      </div>
-
       <!-- Data Backup & Export -->
       <div class="card-surface p-4 space-y-3">
         <div>
-          <h2 class="text-[15px] font-bold text-white">Data & Backup</h2>
-          <p class="text-xs text-gray-400 mt-0.5">Save a backup file to your iPhone or export a spreadsheet.</p>
+          <h2 class="text-[15px] font-bold theme-text-primary">Data & Backup</h2>
+          <p class="text-xs theme-text-secondary mt-0.5">Save a backup file to your iPhone or restore from a previous file.</p>
         </div>
         <div class="grid grid-cols-2 gap-2">
           <button id="backupDownloadBtn" type="button" class="py-2.5 rounded-xl accent-bg text-xs font-bold text-white cursor-pointer">Download Backup</button>
-          <label class="py-2.5 rounded-xl elevated-surface border border-white/10 text-xs font-semibold text-center text-gray-200 cursor-pointer hover:bg-white/10">
+          <label class="py-2.5 rounded-xl elevated-surface border text-xs font-semibold text-center theme-text-primary cursor-pointer hover:opacity-80" style="border-color: var(--border-subtle);">
             Restore Backup
             <input id="backupUploadInput" type="file" accept=".json" class="hidden" />
           </label>
         </div>
-        <button id="exportCsvBtn" type="button" class="w-full py-2.5 rounded-xl elevated-surface border border-white/10 text-xs font-semibold text-gray-300 cursor-pointer">
+        <button id="exportCsvBtn" type="button" class="w-full py-2.5 rounded-xl elevated-surface border text-xs font-semibold theme-text-primary cursor-pointer" style="border-color: var(--border-subtle);">
           Export Focus Records (.CSV)
         </button>
       </div>
@@ -494,72 +506,112 @@
       <!-- Reset Progress -->
       <div class="card-surface p-4 space-y-3">
         <div>
-          <h2 class="text-[15px] font-bold text-red-400">Reset Progress</h2>
-          <p class="text-xs text-gray-400 mt-0.5">Permanently clear all focus records and start at 0h 0m.</p>
+          <h2 class="text-[15px] font-bold text-red-500">Reset Progress</h2>
+          <p class="text-xs theme-text-secondary mt-0.5">A backup file will automatically download before your data is cleared.</p>
         </div>
-        <button id="clearAllDataBtn" type="button" class="w-full py-2.5 rounded-xl bg-red-500/15 hover:bg-red-500/25 border border-red-500/30 text-xs font-bold text-red-400 cursor-pointer transition">
+        <button id="clearAllDataBtn" type="button" class="w-full py-2.5 rounded-xl bg-red-500/15 hover:bg-red-500/25 border border-red-500/30 text-xs font-bold text-red-500 cursor-pointer transition">
           Reset All Focus Data
         </button>
       </div>
 
       <!-- Signature Footer -->
       <div class="pt-6 pb-2 text-center">
-        <p class="text-xs font-semibold tracking-widest uppercase text-gray-500">Made by FAL</p>
-        <p class="text-[10px] text-gray-600 mt-0.5">TeekTeek iOS Edition</p>
+        <p class="text-xs font-semibold tracking-widest uppercase theme-text-muted">Made by FAL</p>
+        <p class="text-[10px] theme-text-muted opacity-70 mt-0.5">TeekTeek iOS Edition</p>
       </div>
 
     </section>
 
   </main>
 
-  <!-- TASK PICKER & CUSTOM TAG MODAL -->
+  <!-- ================= TAG MANAGER MODAL ("Tag") ================= -->
   <div id="taskModal" class="fixed inset-0 z-50 hidden bg-black/75 backdrop-blur-md flex items-end sm:items-center justify-center p-4">
-    <div class="card-surface max-w-sm w-full p-4 space-y-3">
+    <div class="card-surface max-w-sm w-full p-4 space-y-3.5 max-h-[85vh] flex flex-col">
       <div class="flex items-center justify-between">
-        <h3 class="text-sm font-bold text-white">Focus Task / Tag</h3>
-        <button id="closeTaskModalBtn" type="button" class="text-gray-400 hover:text-white text-sm cursor-pointer">✕</button>
+        <h3 class="text-base font-bold theme-text-primary">Tag</h3>
+        <button id="closeTaskModalBtn" type="button" class="theme-text-secondary hover:opacity-75 text-sm cursor-pointer">✕</button>
       </div>
-      <div id="taskOptionsContainer" class="space-y-1.5 max-h-52 overflow-y-auto"></div>
-      <div class="pt-2 border-t border-white/10 flex gap-2">
-        <input id="customTaskInput" type="text" placeholder="New tag name (e.g. RAP report)..." class="flex-1 elevated-surface border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none" />
-        <button id="addCustomTaskBtn" type="button" class="px-3.5 py-2 rounded-xl accent-bg text-white text-xs font-bold cursor-pointer">+ Add</button>
+
+      <!-- Existing Tags List (Tap to Select, Pencil to Edit, Trash to Delete) -->
+      <div id="taskOptionsContainer" class="space-y-1.5 overflow-y-auto pr-1 flex-1"></div>
+
+      <!-- Create or Edit Tag Editor Box -->
+      <div class="pt-3 border-t space-y-2.5" style="border-color: var(--border-subtle);">
+        <div class="flex items-center justify-between">
+          <span id="tagEditorHeading" class="text-[11px] font-bold uppercase tracking-wider theme-text-secondary">New Tag</span>
+          <button id="cancelEditTagBtn" type="button" class="hidden text-[11px] text-red-400 font-semibold cursor-pointer">Cancel Edit</button>
+        </div>
+
+        <div class="flex gap-2">
+          <input id="customTaskInput" type="text" placeholder="Tag name..." class="flex-1 elevated-surface border rounded-xl px-3 py-2 text-xs theme-text-primary focus:outline-none" style="border-color: var(--border-subtle);" />
+          <button id="saveTagBtn" type="button" class="px-4 py-2 rounded-xl accent-bg text-white text-xs font-bold cursor-pointer">Save</button>
+        </div>
+
+        <!-- 14-Color Swatch Picker + Custom Color Wheel -->
+        <div>
+          <div class="text-[10px] theme-text-muted mb-1.5">Tag Color</div>
+          <div id="tagColorSwatches" class="flex flex-wrap items-center gap-1.5"></div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- MANUAL ADD FOCUS RECORD MODAL -->
+  <!-- ================= MANUAL ADD FOCUS RECORD MODAL ================= -->
   <div id="manualModal" class="fixed inset-0 z-50 hidden bg-black/75 backdrop-blur-md flex items-end sm:items-center justify-center p-4">
     <div class="card-surface max-w-sm w-full p-4 space-y-3">
       <div class="flex items-center justify-between">
-        <h3 class="text-sm font-bold text-white">Add Focus Record</h3>
-        <button id="closeManualModalBtn" type="button" class="text-gray-400 hover:text-white text-sm cursor-pointer">✕</button>
+        <h3 class="text-sm font-bold theme-text-primary">Add Focus Record</h3>
+        <button id="closeManualModalBtn" type="button" class="theme-text-secondary text-sm cursor-pointer">✕</button>
       </div>
       <div class="space-y-2.5 text-xs">
         <div>
-          <label class="text-gray-400 block mb-1">Task / Tag</label>
-          <select id="manualTaskSelect" class="w-full elevated-surface border border-white/10 rounded-xl px-3 py-2 text-white"></select>
+          <label class="theme-text-secondary block mb-1">Tag</label>
+          <select id="manualTaskSelect" class="w-full elevated-surface border rounded-xl px-3 py-2 theme-text-primary" style="border-color: var(--border-subtle);"></select>
         </div>
         <div class="grid grid-cols-2 gap-2">
           <div>
-            <label class="text-gray-400 block mb-1">Date</label>
-            <input type="date" id="manualDateInput" class="w-full elevated-surface border border-white/10 rounded-xl px-3 py-2 text-white" />
+            <label class="theme-text-secondary block mb-1">Date</label>
+            <input type="date" id="manualDateInput" class="w-full elevated-surface border rounded-xl px-3 py-2 theme-text-primary" style="border-color: var(--border-subtle);" />
           </div>
           <div>
-            <label class="text-gray-400 block mb-1">Start Time</label>
-            <input type="time" id="manualTimeInput" value="14:30" class="w-full elevated-surface border border-white/10 rounded-xl px-3 py-2 text-white" />
+            <label class="theme-text-secondary block mb-1">Start Time</label>
+            <input type="time" id="manualTimeInput" value="14:30" class="w-full elevated-surface border rounded-xl px-3 py-2 theme-text-primary" style="border-color: var(--border-subtle);" />
           </div>
         </div>
         <div>
-          <label class="text-gray-400 block mb-1">Duration (Minutes)</label>
-          <input type="number" id="manualMinutesInput" value="25" min="1" max="720" class="w-full elevated-surface border border-white/10 rounded-xl px-3 py-2 text-white" />
+          <label class="theme-text-secondary block mb-1">Duration (Minutes)</label>
+          <input type="number" id="manualMinutesInput" value="25" min="1" max="720" class="w-full elevated-surface border rounded-xl px-3 py-2 theme-text-primary" style="border-color: var(--border-subtle);" />
         </div>
         <button id="saveManualRecordBtn" type="button" class="w-full py-2.5 rounded-xl accent-bg text-white font-bold mt-2 cursor-pointer">Save Focus Record</button>
       </div>
     </div>
   </div>
 
-  <!-- BOTTOM APPLE TAB BAR -->
-  <nav class="fixed bottom-0 inset-x-0 z-40 ios-glass border-t border-white/[0.08] px-6 py-2 flex justify-around items-center max-w-md mx-auto">
+  <!-- ================= RESET CONFIRMATION WARNING MODAL ================= -->
+  <div id="resetConfirmModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="card-surface max-w-xs w-full p-5 text-center space-y-4 border border-red-500/30">
+      <div class="w-12 h-12 rounded-full bg-red-500/15 text-red-500 flex items-center justify-center mx-auto text-xl font-bold">
+        !
+      </div>
+      <div>
+        <h3 class="text-base font-bold theme-text-primary">Reset All Focus Data?</h3>
+        <p class="text-xs theme-text-secondary mt-1.5 leading-relaxed">
+          This will clear all your focus history and reset your stats to <strong>0h 0m</strong>. A backup file of your current data will be downloaded automatically first.
+        </p>
+      </div>
+      <div class="flex gap-2.5 pt-1">
+        <button id="cancelResetBtn" type="button" class="flex-1 py-2.5 rounded-xl elevated-surface text-xs font-semibold theme-text-primary cursor-pointer">
+          Cancel
+        </button>
+        <button id="confirmResetBtn" type="button" class="flex-1 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-xs font-bold text-white cursor-pointer">
+          Backup & Reset
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM TAB BAR -->
+  <nav class="fixed bottom-0 inset-x-0 z-40 ios-glass border-t px-6 py-2 flex justify-around items-center max-w-md mx-auto" style="border-color: var(--border-subtle);">
     <button id="tabBtn-timer" type="button" class="flex flex-col items-center gap-1 accent-text cursor-pointer">
       <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -567,14 +619,14 @@
       <span class="text-[10px] font-semibold">Focus</span>
     </button>
 
-    <button id="tabBtn-stats" type="button" class="flex flex-col items-center gap-1 text-gray-500 hover:text-white transition cursor-pointer">
+    <button id="tabBtn-stats" type="button" class="flex flex-col items-center gap-1 theme-text-muted cursor-pointer">
       <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
       </svg>
       <span class="text-[10px] font-semibold">Statistics</span>
     </button>
 
-    <button id="tabBtn-settings" type="button" class="flex flex-col items-center gap-1 text-gray-500 hover:text-white transition cursor-pointer">
+    <button id="tabBtn-settings" type="button" class="flex flex-col items-center gap-1 theme-text-muted cursor-pointer">
       <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
         <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -590,84 +642,159 @@
       const SETTINGS_KEY = 'teekteek_settings_v1';
       const TASKS_KEY = 'teekteek_custom_tasks_v1';
 
-      // 10 Curated Apple & TickTick Color Themes
+      // Generate Custom Illustrated Home Screen Icon via HTML5 Canvas
+      function generateIllustratedAppIcon() {
+        try {
+          const canvas = document.createElement('canvas');
+          canvas.width = 512;
+          canvas.height = 512;
+          const ctx = canvas.getContext('2d');
+
+          // Deep Carbon-Black Background
+          const bgGrad = ctx.createLinearGradient(0, 0, 512, 512);
+          bgGrad.addColorStop(0, '#16161a');
+          bgGrad.addColorStop(1, '#050507');
+          ctx.fillStyle = bgGrad;
+          ctx.fillRect(0, 0, 512, 512);
+
+          // Subtle Radial Red Glow
+          const glow = ctx.createRadialGradient(256, 270, 20, 256, 270, 220);
+          glow.addColorStop(0, 'rgba(255, 59, 48, 0.35)');
+          glow.addColorStop(1, 'rgba(255, 59, 48, 0)');
+          ctx.fillStyle = glow;
+          ctx.fillRect(0, 0, 512, 512);
+
+          // Outer Watch/Focus Dial Track
+          ctx.beginPath();
+          ctx.arc(256, 272, 155, 0, Math.PI * 2);
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+          ctx.lineWidth = 28;
+          ctx.stroke();
+
+          // Active Crimson Focus Arc
+          ctx.beginPath();
+          ctx.arc(256, 272, 155, -Math.PI / 2, Math.PI * 0.85);
+          ctx.strokeStyle = '#ff3b30';
+          ctx.lineWidth = 28;
+          ctx.lineCap = 'round';
+          ctx.stroke();
+
+          // Top Stopwatch Crown Button Illustration
+          ctx.fillStyle = '#ff3b30';
+          ctx.beginPath();
+          ctx.roundRect(232, 64, 48, 22, 10);
+          ctx.fill();
+          ctx.fillRect(246, 84, 20, 18);
+
+          // Inner Clock Hands / Flame Geometric Illustration
+          ctx.strokeStyle = '#ffffff';
+          ctx.lineWidth = 16;
+          ctx.lineCap = 'round';
+          ctx.beginPath();
+          ctx.moveTo(256, 272);
+          ctx.lineTo(256, 188);
+          ctx.stroke();
+
+          ctx.strokeStyle = '#ff3b30';
+          ctx.beginPath();
+          ctx.moveTo(256, 272);
+          ctx.lineTo(320, 310);
+          ctx.stroke();
+
+          // Center Dot
+          ctx.fillStyle = '#ffffff';
+          ctx.beginPath();
+          ctx.arc(256, 272, 14, 0, Math.PI * 2);
+          ctx.fill();
+
+          const dataUrl = canvas.toDataURL('image/png');
+          document.getElementById('appleTouchIcon').href = dataUrl;
+          document.getElementById('favIcon').href = dataUrl;
+        } catch (e) {}
+      }
+
       const COLOR_THEMES = {
         crimson: {
           name: 'Crimson Red',
           accent: '#ff3b30',
-          soft: 'rgba(255, 59, 48, 0.18)',
+          soft: 'rgba(255, 59, 48, 0.16)',
           glow: 'rgba(255, 59, 48, 0.38)',
           heat: ['#262629', '#fde2e1', '#f89892', '#ef5349', '#ff3b30']
         },
         ticktick: {
           name: 'Classic Orange',
           accent: '#ff7a00',
-          soft: 'rgba(255, 122, 0, 0.18)',
+          soft: 'rgba(255, 122, 0, 0.16)',
           glow: 'rgba(255, 122, 0, 0.38)',
           heat: ['#262629', '#fdecd8', '#f8b878', '#f28c28', '#ff7a00']
         },
         ruby: {
           name: 'Dark Blood Ruby',
           accent: '#e11d48',
-          soft: 'rgba(225, 29, 72, 0.18)',
+          soft: 'rgba(225, 29, 72, 0.16)',
           glow: 'rgba(225, 29, 72, 0.38)',
           heat: ['#262629', '#4c111d', '#881337', '#be123c', '#f43f5e']
         },
         emerald: {
-          name: 'Apple Fitness Green',
+          name: 'Fitness Green',
           accent: '#30d158',
-          soft: 'rgba(48, 209, 88, 0.18)',
+          soft: 'rgba(48, 209, 88, 0.16)',
           glow: 'rgba(48, 209, 88, 0.38)',
           heat: ['#262629', '#d9fbe2', '#7ee797', '#34c759', '#248a3d']
         },
         ocean: {
-          name: 'iOS Electric Blue',
+          name: 'Electric Blue',
           accent: '#0a84ff',
-          soft: 'rgba(10, 132, 255, 0.18)',
+          soft: 'rgba(10, 132, 255, 0.16)',
           glow: 'rgba(10, 132, 255, 0.38)',
           heat: ['#262629', '#dbeafe', '#93c5fd', '#3b82f6', '#0a84ff']
         },
         indigo: {
-          name: 'Pro Indigo Violet',
+          name: 'Indigo Violet',
           accent: '#bf5af2',
-          soft: 'rgba(191, 90, 242, 0.18)',
+          soft: 'rgba(191, 90, 242, 0.16)',
           glow: 'rgba(191, 90, 242, 0.38)',
           heat: ['#262629', '#f3e8ff', '#d8b4fe', '#a855f7', '#9333ea']
         },
         cyber: {
           name: 'Cyber Teal',
-          accent: '#64d2ff',
-          soft: 'rgba(100, 210, 255, 0.18)',
-          glow: 'rgba(100, 210, 255, 0.38)',
+          accent: '#06b6d4',
+          soft: 'rgba(6, 182, 212, 0.16)',
+          glow: 'rgba(6, 182, 212, 0.38)',
           heat: ['#262629', '#cffafe', '#67e8f9', '#06b6d4', '#0891b2']
         },
         gold: {
-          name: 'Desert Titanium Gold',
-          accent: '#ffd60a',
-          soft: 'rgba(255, 214, 10, 0.18)',
-          glow: 'rgba(255, 214, 10, 0.35)',
+          name: 'Titanium Gold',
+          accent: '#eab308',
+          soft: 'rgba(234, 179, 8, 0.16)',
+          glow: 'rgba(234, 179, 8, 0.35)',
           heat: ['#262629', '#fef9c3', '#fde047', '#eab308', '#ca8a04']
         },
         rose: {
           name: 'Flamingo Pink',
           accent: '#ff375f',
-          soft: 'rgba(255, 55, 95, 0.18)',
+          soft: 'rgba(255, 55, 95, 0.16)',
           glow: 'rgba(255, 55, 95, 0.38)',
           heat: ['#262629', '#fce7f3', '#f472b6', '#ec4899', '#db2777']
         },
         mono: {
-          name: 'Monochrome Silver',
-          accent: '#e5e5ea',
-          soft: 'rgba(229, 229, 234, 0.16)',
-          glow: 'rgba(229, 229, 234, 0.25)',
-          heat: ['#262629', '#52525b', '#71717a', '#a1a1aa', '#f4f4f5']
+          name: 'Monochrome',
+          accent: '#a1a1aa',
+          soft: 'rgba(161, 161, 170, 0.16)',
+          glow: 'rgba(161, 161, 170, 0.25)',
+          heat: ['#262629', '#52525b', '#71717a', '#a1a1aa', '#e4e4e7']
         }
       };
+
+      const TAG_SWATCHES = [
+        '#ff3b30', '#ff7a00', '#eab308', '#30d158', '#10b981', '#06b6d4', '#0a84ff',
+        '#3b82f6', '#6366f1', '#bf5af2', '#ec4899', '#ff375f', '#a1a1aa', '#ffffff'
+      ];
 
       const DEFAULT_TASKS = [
         { name: 'Deep Work', color: '#ff3b30' },
         { name: 'Study & Exam Prep', color: '#0a84ff' },
-        { name: 'RAP report', color: '#ff9f0a' },
+        { name: 'RAP report', color: '#ff7a00' },
         { name: 'Coding', color: '#30d158' },
         { name: 'Reading', color: '#bf5af2' }
       ];
@@ -691,6 +818,9 @@
       } catch (e) {}
 
       let currentTask = TASKS[0];
+      let editingTagIndex = null; // null = creating new tag, number = editing existing tag
+      let selectedTagColor = TAG_SWATCHES[0];
+
       let timerMode = 'pomodoro';
       let isRunning = false;
       let pomoDurationSec = 25 * 60;
@@ -801,6 +931,10 @@
         try { localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions)); } catch (e) {}
       }
 
+      function saveTasks() {
+        try { localStorage.setItem(TASKS_KEY, JSON.stringify(TASKS)); } catch (e) {}
+      }
+
       function saveSettings() {
         try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(userSettings)); } catch (e) {}
       }
@@ -811,25 +945,63 @@
         root.style.setProperty('--accent', t.accent);
         root.style.setProperty('--accent-soft', t.soft);
         root.style.setProperty('--accent-glow', t.glow);
-        root.style.setProperty('--heat-0', t.heat[0]);
+
+        const isLight = userSettings.bgMode === 'light';
+        root.style.setProperty('--heat-0', isLight ? '#e4e4e7' : t.heat[0]);
         root.style.setProperty('--heat-1', t.heat[1]);
         root.style.setProperty('--heat-2', t.heat[2]);
         root.style.setProperty('--heat-3', t.heat[3]);
         root.style.setProperty('--heat-4', t.heat[4]);
 
-        if (userSettings.bgMode === 'carbon') {
+        if (isLight) {
+          root.style.setProperty('--bg-primary', '#f2f2f7');
+          root.style.setProperty('--bg-card', '#ffffff');
+          root.style.setProperty('--bg-elevated', '#f4f4f6');
+          root.style.setProperty('--text-primary', '#111827');
+          root.style.setProperty('--text-secondary', '#4b5563');
+          root.style.setProperty('--text-muted', '#6b7280');
+          root.style.setProperty('--border-subtle', 'rgba(0, 0, 0, 0.08)');
+          root.style.setProperty('--glass-bg', 'rgba(255, 255, 255, 0.85)');
+          root.style.setProperty('--ring-track', 'rgba(0, 0, 0, 0.08)');
+          root.style.setProperty('--empty-slot', '#e4e4e7');
+        } else if (userSettings.bgMode === 'carbon') {
           root.style.setProperty('--bg-primary', '#0d0e12');
           root.style.setProperty('--bg-card', '#171920');
           root.style.setProperty('--bg-elevated', '#222530');
-          document.getElementById('bgCarbonBtn').className = 'flex-1 py-2.5 rounded-xl elevated-surface border accent-border text-xs font-semibold text-white cursor-pointer';
-          document.getElementById('bgOledBtn').className = 'flex-1 py-2.5 rounded-xl elevated-surface border border-white/5 text-xs font-semibold text-gray-400 cursor-pointer';
+          root.style.setProperty('--text-primary', '#f5f5f7');
+          root.style.setProperty('--text-secondary', '#9ca3af');
+          root.style.setProperty('--text-muted', '#6b7280');
+          root.style.setProperty('--border-subtle', 'rgba(255, 255, 255, 0.07)');
+          root.style.setProperty('--glass-bg', 'rgba(18, 20, 26, 0.84)');
+          root.style.setProperty('--ring-track', 'rgba(255, 255, 255, 0.07)');
+          root.style.setProperty('--empty-slot', '#222530');
         } else {
           root.style.setProperty('--bg-primary', '#000000');
           root.style.setProperty('--bg-card', '#161618');
           root.style.setProperty('--bg-elevated', '#212124');
-          document.getElementById('bgOledBtn').className = 'flex-1 py-2.5 rounded-xl elevated-surface border accent-border text-xs font-semibold text-white cursor-pointer';
-          document.getElementById('bgCarbonBtn').className = 'flex-1 py-2.5 rounded-xl elevated-surface border border-white/5 text-xs font-semibold text-gray-400 cursor-pointer';
+          root.style.setProperty('--text-primary', '#f5f5f7');
+          root.style.setProperty('--text-secondary', '#9ca3af');
+          root.style.setProperty('--text-muted', '#6b7280');
+          root.style.setProperty('--border-subtle', 'rgba(255, 255, 255, 0.065)');
+          root.style.setProperty('--glass-bg', 'rgba(18, 18, 20, 0.84)');
+          root.style.setProperty('--ring-track', 'rgba(255, 255, 255, 0.07)');
+          root.style.setProperty('--empty-slot', '#1e1e22');
         }
+
+        const modes = [
+          { id: 'bgOledBtn', key: 'oled' },
+          { id: 'bgCarbonBtn', key: 'carbon' },
+          { id: 'bgLightBtn', key: 'light' }
+        ];
+        modes.forEach(m => {
+          const el = document.getElementById(m.id);
+          if (userSettings.bgMode === m.key) {
+            el.className = 'py-2.5 rounded-xl elevated-surface border accent-border text-xs font-bold theme-text-primary cursor-pointer';
+          } else {
+            el.className = 'py-2.5 rounded-xl elevated-surface border text-xs font-semibold theme-text-secondary cursor-pointer';
+            el.style.borderColor = 'var(--border-subtle)';
+          }
+        });
 
         renderThemeSelector();
         if (activeTab === 'stats') renderAllAnalytics();
@@ -843,10 +1015,11 @@
           const btn = document.createElement('button');
           btn.type = 'button';
           btn.className = 'p-3 rounded-xl elevated-surface border text-left flex flex-col gap-2 cursor-pointer transition ' +
-            (isSelected ? 'accent-border' : 'border-white/5');
+            (isSelected ? 'accent-border' : '');
+          if (!isSelected) btn.style.borderColor = 'var(--border-subtle)';
           btn.innerHTML =
             '<div class="flex items-center justify-between">' +
-              '<span class="text-xs font-semibold text-white truncate pr-1">' + t.name + '</span>' +
+              '<span class="text-xs font-semibold theme-text-primary truncate pr-1">' + t.name + '</span>' +
               '<span class="w-3.5 h-3.5 rounded-full flex-shrink-0" style="background:' + t.accent + '"></span>' +
             '</div>' +
             '<div class="flex gap-1">' +
@@ -874,7 +1047,7 @@
 
         ['timer', 'stats', 'settings'].forEach(t => {
           document.getElementById('tabBtn-' + t).className = 'flex flex-col items-center gap-1 cursor-pointer ' +
-            (tab === t ? 'accent-text' : 'text-gray-500');
+            (tab === t ? 'accent-text' : 'theme-text-muted');
         });
 
         if (tab === 'stats') renderAllAnalytics();
@@ -891,11 +1064,11 @@
         document.getElementById('lapsContainer').classList.add('hidden');
 
         document.getElementById('modePomoBtn').className = mode === 'pomodoro'
-          ? 'flex-1 py-1.5 text-xs font-semibold rounded-full elevated-surface text-white shadow-sm transition cursor-pointer'
-          : 'flex-1 py-1.5 text-xs font-semibold rounded-full text-gray-400 hover:text-white transition cursor-pointer';
+          ? 'flex-1 py-1.5 text-xs font-semibold rounded-full elevated-surface theme-text-primary shadow-sm transition cursor-pointer'
+          : 'flex-1 py-1.5 text-xs font-semibold rounded-full theme-text-secondary transition cursor-pointer';
         document.getElementById('modeStopBtn').className = mode === 'stopwatch'
-          ? 'flex-1 py-1.5 text-xs font-semibold rounded-full elevated-surface text-white shadow-sm transition cursor-pointer'
-          : 'flex-1 py-1.5 text-xs font-semibold rounded-full text-gray-400 hover:text-white transition cursor-pointer';
+          ? 'flex-1 py-1.5 text-xs font-semibold rounded-full elevated-surface theme-text-primary shadow-sm transition cursor-pointer'
+          : 'flex-1 py-1.5 text-xs font-semibold rounded-full theme-text-secondary transition cursor-pointer';
 
         document.getElementById('pomoPresets').classList.toggle('hidden', mode === 'stopwatch');
         document.getElementById('phaseBadge').textContent = mode === 'pomodoro' ? 'FOCUS' : 'STOPWATCH';
@@ -910,23 +1083,19 @@
         document.querySelectorAll('.pomo-preset').forEach(btn => {
           const isMatch = parseInt(btn.getAttribute('data-mins'), 10) === mins;
           btn.className = 'pomo-preset px-3.5 py-1.5 rounded-full card-surface text-xs font-semibold transition cursor-pointer ' +
-            (isMatch ? 'border accent-border text-white' : 'text-gray-400');
+            (isMatch ? 'border accent-border theme-text-primary' : 'theme-text-secondary');
         });
         updateTimerUI();
       }
 
       function setMainButtonState(state) {
         const textEl = document.getElementById('mainActionText');
-        const iconEl = document.getElementById('mainActionIcon');
         if (state === 'running') {
           textEl.textContent = 'Pause';
-          iconEl.innerHTML = '<path d="M6 5h4v14H6V5zm8 0h4v14h-4V5z"/>';
         } else if (state === 'paused') {
           textEl.textContent = 'Resume';
-          iconEl.innerHTML = '<path d="M8 5.14v14l11-7-11-7z"/>';
         } else {
-          textEl.textContent = 'Start Focus';
-          iconEl.innerHTML = '<path d="M8 5.14v14l11-7-11-7z"/>';
+          textEl.textContent = 'Start';
         }
       }
 
@@ -962,8 +1131,8 @@
         container.classList.remove('hidden');
         list.innerHTML = laps.map(l =>
           '<div class="flex justify-between items-center elevated-surface px-3 py-1.5 rounded-xl">' +
-            '<span class="text-gray-400">Lap #' + l.index + '</span>' +
-            '<span class="font-mono font-bold accent-text">' + formatClock(l.sec) + '</span>' +
+            '<span class="theme-text-secondary">Lap #' + l.index + '</span>' +
+            '<span class="font-bold accent-text">' + formatClock(l.sec) + '</span>' +
           '</div>'
         ).join('');
       }
@@ -1046,30 +1215,161 @@
         }
       }
 
+      // ================= FULL TAG & COLOR MANAGER =================
+      function renderTagColorSwatches() {
+        const container = document.getElementById('tagColorSwatches');
+        container.innerHTML = '';
+        TAG_SWATCHES.forEach(color => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          const isSelected = selectedTagColor.toLowerCase() === color.toLowerCase();
+          btn.className = 'w-6 h-6 rounded-full cursor-pointer transition-transform ' + (isSelected ? 'scale-125 ring-2 ring-white' : 'opacity-80 hover:opacity-100');
+          btn.style.backgroundColor = color;
+          btn.addEventListener('click', () => {
+            playClickSound();
+            selectedTagColor = color;
+            renderTagColorSwatches();
+          });
+          container.appendChild(btn);
+        });
+
+        // Native Custom Color Input Picker
+        const colorInput = document.createElement('input');
+        colorInput.type = 'color';
+        colorInput.value = selectedTagColor;
+        colorInput.title = 'Custom Color';
+        colorInput.className = 'w-6 h-6 rounded-full border-0 p-0 bg-transparent cursor-pointer';
+        colorInput.addEventListener('input', (e) => {
+          selectedTagColor = e.target.value;
+          renderTagColorSwatches();
+        });
+        container.appendChild(colorInput);
+      }
+
+      function startEditingTag(idx) {
+        editingTagIndex = idx;
+        const tag = TASKS[idx];
+        document.getElementById('tagEditorHeading').textContent = 'Edit Tag: ' + tag.name;
+        document.getElementById('customTaskInput').value = tag.name;
+        document.getElementById('cancelEditTagBtn').classList.remove('hidden');
+        selectedTagColor = tag.color;
+        renderTagColorSwatches();
+      }
+
+      function resetTagEditor() {
+        editingTagIndex = null;
+        document.getElementById('tagEditorHeading').textContent = 'New Tag';
+        document.getElementById('customTaskInput').value = '';
+        document.getElementById('cancelEditTagBtn').classList.add('hidden');
+        selectedTagColor = TAG_SWATCHES[TASKS.length % TAG_SWATCHES.length];
+        renderTagColorSwatches();
+      }
+
       function renderTaskOptions() {
         const container = document.getElementById('taskOptionsContainer');
         const select = document.getElementById('manualTaskSelect');
         container.innerHTML = '';
         select.innerHTML = '';
 
-        TASKS.forEach(t => {
-          const btn = document.createElement('button');
-          btn.type = 'button';
-          btn.className = 'w-full px-3 py-2.5 rounded-xl elevated-surface hover:bg-white/10 flex items-center justify-between text-xs text-white transition cursor-pointer';
-          btn.innerHTML = '<span class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full" style="background:' + t.color + '"></span>' + t.name + '</span>';
-          btn.addEventListener('click', () => {
+        TASKS.forEach((t, idx) => {
+          const row = document.createElement('div');
+          row.className = 'w-full px-3 py-2 rounded-xl elevated-surface flex items-center justify-between text-xs theme-text-primary';
+
+          const selectBtn = document.createElement('button');
+          selectBtn.type = 'button';
+          selectBtn.className = 'flex-1 flex items-center gap-2.5 text-left font-medium cursor-pointer py-0.5';
+          selectBtn.innerHTML =
+            '<span class="w-3 h-3 rounded-full flex-shrink-0" style="background:' + t.color + '"></span>' +
+            '<span class="truncate">' + t.name + '</span>' +
+            (currentTask.name === t.name ? '<span class="text-[10px] accent-text font-bold ml-1">✓</span>' : '');
+          selectBtn.addEventListener('click', () => {
+            playClickSound();
             currentTask = t;
             document.getElementById('activeTaskDot').style.background = t.color;
             document.getElementById('activeTaskLabel').textContent = t.name;
             document.getElementById('taskModal').classList.add('hidden');
+            renderTaskOptions();
           });
-          container.appendChild(btn);
+
+          const actions = document.createElement('div');
+          actions.className = 'flex items-center gap-1.5 pl-2';
+
+          const editBtn = document.createElement('button');
+          editBtn.type = 'button';
+          editBtn.className = 'px-2 py-1 rounded-lg hover:bg-white/10 theme-text-secondary text-[11px] cursor-pointer';
+          editBtn.textContent = 'Edit';
+          editBtn.addEventListener('click', () => {
+            playClickSound();
+            startEditingTag(idx);
+          });
+          actions.appendChild(editBtn);
+
+          if (TASKS.length > 1) {
+            const delBtn = document.createElement('button');
+            delBtn.type = 'button';
+            delBtn.className = 'px-1.5 py-1 rounded-lg hover:bg-red-500/20 text-red-400 text-[11px] cursor-pointer';
+            delBtn.textContent = '✕';
+            delBtn.addEventListener('click', () => {
+              playClickSound();
+              TASKS.splice(idx, 1);
+              saveTasks();
+              if (currentTask.name === t.name) {
+                currentTask = TASKS[0];
+                document.getElementById('activeTaskDot').style.background = currentTask.color;
+                document.getElementById('activeTaskLabel').textContent = currentTask.name;
+              }
+              resetTagEditor();
+              renderTaskOptions();
+            });
+            actions.appendChild(delBtn);
+          }
+
+          row.appendChild(selectBtn);
+          row.appendChild(actions);
+          container.appendChild(row);
 
           const opt = document.createElement('option');
           opt.value = t.name;
           opt.textContent = t.name;
           select.appendChild(opt);
         });
+
+        renderTagColorSwatches();
+      }
+
+      function saveTagFromEditor() {
+        const input = document.getElementById('customTaskInput');
+        const name = (input.value || '').trim();
+        if (!name) return;
+
+        if (editingTagIndex !== null && TASKS[editingTagIndex]) {
+          const oldName = TASKS[editingTagIndex].name;
+          TASKS[editingTagIndex].name = name;
+          TASKS[editingTagIndex].color = selectedTagColor;
+
+          // Update historical records that used this tag so charts reflect the new name/color
+          sessions.forEach(s => {
+            if (s.task === oldName) {
+              s.task = name;
+              s.color = selectedTagColor;
+            }
+          });
+          saveStorage();
+          if (currentTask.name === oldName) {
+            currentTask = TASKS[editingTagIndex];
+          }
+        } else {
+          const newTag = { name, color: selectedTagColor };
+          TASKS.push(newTag);
+          currentTask = newTag;
+        }
+
+        saveTasks();
+        document.getElementById('activeTaskDot').style.background = currentTask.color;
+        document.getElementById('activeTaskLabel').textContent = currentTask.name;
+        resetTagEditor();
+        renderTaskOptions();
+        if (activeTab === 'stats') renderAllAnalytics();
       }
 
       function formatHoursMinsPlain(totalSec) {
@@ -1078,7 +1378,7 @@
         return hrs > 0 ? (hrs + 'h ' + mins + 'm') : (mins + 'm');
       }
 
-      function formatSplitUnitsHTML(totalSec, sizeClass) {
+      function formatSplitUnitsHTML(totalSec) {
         const hrs = Math.floor(totalSec / 3600);
         const mins = Math.floor((totalSec % 3600) / 60);
         return hrs + '<span class="text-sm font-medium ml-0.5 mr-1">h</span>' +
@@ -1100,8 +1400,8 @@
         const hrs = Math.floor(todaySec / 3600);
         const mins = Math.floor((todaySec % 3600) / 60);
         document.getElementById('miniTodayHours').innerHTML =
-          hrs + '<span class="text-xs font-normal text-gray-400 ml-0.5 mr-1">h</span>' +
-          mins + '<span class="text-xs font-normal text-gray-400 ml-0.5">m</span>';
+          hrs + '<span class="text-xs font-normal theme-text-secondary ml-0.5 mr-1">h</span>' +
+          mins + '<span class="text-xs font-normal theme-text-secondary ml-0.5">m</span>';
         document.getElementById('miniTodayPomos').textContent = Math.floor(todaySec / 1500);
       }
 
@@ -1116,7 +1416,6 @@
         renderYearGridsCard();
       }
 
-      // 1. Top 4 Overview Cards
       function renderOverviewCards() {
         const now = new Date();
         const todayKey = toDateKey(now);
@@ -1151,13 +1450,12 @@
         document.getElementById('statTotalDuration').innerHTML = formatSplitUnitsHTML(totalSec);
       }
 
-      // 2. Focus Record Timeline (Screenshot 3 style)
       function renderFocusRecordsTimeline() {
         const container = document.getElementById('focusRecordTimeline');
         container.innerHTML = '';
 
         if (sessions.length === 0) {
-          container.innerHTML = '<p class="text-xs text-gray-500 py-2">No focus records yet. Tap + to add or start a timer.</p>';
+          container.innerHTML = '<p class="text-xs theme-text-muted py-2">No focus records yet. Tap + to add or start a timer.</p>';
           return;
         }
 
@@ -1169,21 +1467,21 @@
           const dateLabel = endD.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' });
 
           const row = document.createElement('div');
-          row.className = 'flex items-start gap-3 text-xs group';
+          row.className = 'flex items-start gap-3 text-xs';
           row.innerHTML =
             '<div class="flex flex-col items-center pt-0.5">' +
-              '<div class="w-5 h-5 rounded-full accent-bg flex items-center justify-center text-[10px] text-white shadow-sm">⏱</div>' +
-              (idx < Math.min(sessions.length, 15) - 1 ? '<div class="w-[1.5px] h-6 bg-white/10 mt-1"></div>' : '') +
+              '<div class="w-5 h-5 rounded-full flex items-center justify-center text-[10px] text-white shadow-sm" style="background:' + (s.color || 'var(--accent)') + '">⏱</div>' +
+              (idx < Math.min(sessions.length, 15) - 1 ? '<div class="w-[1.5px] h-6 bg-gray-500/20 mt-1"></div>' : '') +
             '</div>' +
             '<div class="flex-1 min-w-0">' +
-              '<div class="flex items-center justify-between text-gray-400">' +
-                '<div><span class="text-gray-200 font-medium mr-2">' + dateLabel + '</span><span>' + fmtTime(startD) + ' - ' + fmtTime(endD) + '</span></div>' +
+              '<div class="flex items-center justify-between theme-text-secondary">' +
+                '<div><span class="theme-text-primary font-semibold mr-2">' + dateLabel + '</span><span>' + fmtTime(startD) + ' - ' + fmtTime(endD) + '</span></div>' +
                 '<div class="flex items-center gap-2">' +
-                  '<span class="text-gray-400">' + formatHoursMinsPlain(s.durationSec) + '</span>' +
-                  '<button type="button" data-del="' + s.id + '" class="del-record-btn text-gray-600 hover:text-red-400 cursor-pointer">✕</button>' +
+                  '<span class="theme-text-secondary">' + formatHoursMinsPlain(s.durationSec) + '</span>' +
+                  '<button type="button" data-del="' + s.id + '" class="del-record-btn theme-text-muted hover:text-red-500 cursor-pointer">✕</button>' +
                 '</div>' +
               '</div>' +
-              '<div class="text-white font-semibold mt-0.5 truncate">' + s.task + '</div>' +
+              '<div class="theme-text-primary font-semibold mt-0.5 truncate">' + s.task + '</div>' +
             '</div>';
           container.appendChild(row);
         });
@@ -1199,7 +1497,6 @@
         });
       }
 
-      // 3. Details Card (Ring + Focus Ranking)
       function renderDetailsCard() {
         const now = new Date();
         const target = new Date(now);
@@ -1249,16 +1546,16 @@
 
         const circumference = 2 * Math.PI * 46;
         if (grandTotal === 0) {
-          svg.innerHTML = '<circle cx="60" cy="60" r="46" stroke="#dcdce0" stroke-width="14" fill="none" />';
+          svg.innerHTML = '<circle cx="60" cy="60" r="46" stroke="var(--heat-0)" stroke-width="14" fill="none" />';
           centerLabel.textContent = 'No Data';
-          centerLabel.className = 'text-xs font-medium text-gray-500';
-          list.innerHTML = '<div class="text-gray-500 text-xs">None</div>';
+          centerLabel.className = 'text-xs font-medium theme-text-muted';
+          list.innerHTML = '<div class="theme-text-muted text-xs">None</div>';
           return;
         }
 
-        svg.innerHTML = '<circle cx="60" cy="60" r="46" stroke="#262629" stroke-width="14" fill="none" />';
+        svg.innerHTML = '<circle cx="60" cy="60" r="46" stroke="var(--heat-0)" stroke-width="14" fill="none" />';
         centerLabel.textContent = formatHoursMinsPlain(grandTotal);
-        centerLabel.className = 'sf-rounded text-base font-bold text-white';
+        centerLabel.className = 'text-base font-bold theme-text-primary';
         list.innerHTML = '';
 
         const entries = Object.entries(totalsByTask).sort((a, b) => b[1].sec - a[1].sec);
@@ -1283,20 +1580,19 @@
           const row = document.createElement('div');
           row.innerHTML =
             '<div class="flex justify-between items-center mb-1">' +
-              '<span class="flex items-center gap-2 text-white font-medium">' +
+              '<span class="flex items-center gap-2 theme-text-primary font-medium">' +
                 '<span class="w-2.5 h-2.5 rounded-full" style="background:' + data.color + '"></span>' +
                 taskName +
               '</span>' +
-              '<span class="text-gray-400 font-mono text-[11px]">' + formatHoursMinsPlain(data.sec) + ' (' + Math.round(pct * 100) + '%)</span>' +
+              '<span class="theme-text-secondary text-[11px]">' + formatHoursMinsPlain(data.sec) + ' (' + Math.round(pct * 100) + '%)</span>' +
             '</div>' +
-            '<div class="w-full h-1.5 bg-[#262629] rounded-full overflow-hidden">' +
+            '<div class="w-full h-1.5 rounded-full overflow-hidden" style="background: var(--heat-0);">' +
               '<div class="h-full rounded-full" style="width:' + Math.round(pct * 100) + '%; background:' + data.color + '"></div>' +
             '</div>';
           list.appendChild(row);
         });
       }
 
-      // 4. Trends Card (Su Mo Tu We Th Fr Sa + Daily Average)
       function renderTrendsCard() {
         const now = new Date();
         const sun = new Date(now);
@@ -1323,16 +1619,16 @@
         const avgH = Math.floor(avgSec / 3600);
         const avgM = Math.floor((avgSec % 3600) / 60);
         document.getElementById('trendDailyAvg').innerHTML = avgH > 0
-          ? avgH + '<span class="text-xs font-normal text-gray-400 ml-0.5 mr-1">h</span>' + avgM + '<span class="text-xs font-normal text-gray-400 ml-0.5">m</span>'
-          : avgM + '<span class="text-xs font-normal text-gray-400 ml-0.5">m</span>';
+          ? avgH + '<span class="text-xs font-normal theme-text-secondary ml-0.5 mr-1">h</span>' + avgM + '<span class="text-xs font-normal theme-text-secondary ml-0.5">m</span>'
+          : avgM + '<span class="text-xs font-normal theme-text-secondary ml-0.5">m</span>';
 
         const area = document.getElementById('trendsChartArea');
         area.innerHTML = '';
 
         if (totalWeekSec === 0) {
           area.innerHTML =
-            '<div class="absolute inset-0 flex items-center justify-center text-xs text-gray-500 pointer-events-none">No Data</div>' +
-            '<div class="w-full flex justify-between text-[11px] text-gray-500 pt-2">' +
+            '<div class="absolute inset-0 flex items-center justify-center text-xs theme-text-muted pointer-events-none">No Data</div>' +
+            '<div class="w-full flex justify-between text-[11px] theme-text-muted pt-2">' +
               dayNames.map(n => '<span class="flex-1 text-center">' + n + '</span>').join('') +
             '</div>';
           return;
@@ -1344,13 +1640,12 @@
           const col = document.createElement('div');
           col.className = 'flex-1 flex flex-col items-center justify-end h-full';
           col.innerHTML =
-            '<div class="w-full max-w-[20px] rounded-t-md transition-all duration-300 ' + (sec > 0 ? 'accent-bg' : 'bg-[#262629]') + '" style="height:' + pct + '%"></div>' +
-            '<span class="text-[11px] text-gray-500 mt-2">' + dayNames[idx] + '</span>';
+            '<div class="w-full max-w-[20px] rounded-t-md transition-all duration-300 ' + (sec > 0 ? 'accent-bg' : 'heat-0') + '" style="height:' + pct + '%"></div>' +
+            '<span class="text-[11px] theme-text-muted mt-2">' + dayNames[idx] + '</span>';
           area.appendChild(col);
         });
       }
 
-      // 5. Timeline Schedule Grid (00:00 - 24:00 across Sun - Sat)
       function renderScheduleTimelineCard() {
         const now = new Date();
         const sun = new Date(now);
@@ -1369,7 +1664,8 @@
           const k = toDateKey(d);
 
           const col = document.createElement('div');
-          col.className = 'relative h-full bg-white/[0.015] rounded-sm overflow-hidden';
+          col.className = 'relative h-full rounded-sm overflow-hidden';
+          col.style.backgroundColor = 'var(--empty-slot)';
 
           const daySessions = sessions.filter(s => toDateKey(new Date(s.timestamp)) === k);
           daySessions.forEach(s => {
@@ -1392,7 +1688,6 @@
         }
       }
 
-      // 6. Most Focused Time Card (24-Hour Histogram)
       function renderMostFocusedTimeCard() {
         const now = new Date();
         const target = new Date(now.getFullYear(), now.getMonth() + mftMonthOffset, 1);
@@ -1423,7 +1718,8 @@
         hourTotalsSec.forEach((sec) => {
           const pct = sec > 0 ? Math.max(8, Math.round((sec / maxSec) * 100)) : 100;
           const slot = document.createElement('div');
-          slot.className = 'h-full bg-[#1e1e22] rounded-full flex items-end overflow-hidden';
+          slot.className = 'h-full rounded-full flex items-end overflow-hidden';
+          slot.style.backgroundColor = 'var(--empty-slot)';
           if (sec > 0) {
             slot.innerHTML = '<div class="w-full rounded-full accent-bg transition-all duration-300" style="height:' + pct + '%"></div>';
           }
@@ -1431,7 +1727,6 @@
         });
       }
 
-      // 7. Non-Scrolling Year Grids (25 Columns x 15 Rows = 375 Cells)
       function renderYearGridsCard() {
         document.getElementById('heatmapYearLabel').textContent = selectedYear;
 
@@ -1461,7 +1756,6 @@
           const sec = dayMap[key] || 0;
           const hrs = sec / 3600;
 
-          // Match exact screenshot legend: 0m | 0-1h | 1h-3h | 3h-5h | >5h
           let heatClass = 'heat-0';
           if (sec > 0 && hrs <= 1) heatClass = 'heat-1';
           else if (hrs > 1 && hrs <= 3) heatClass = 'heat-2';
@@ -1475,23 +1769,34 @@
           cell.addEventListener('click', () => {
             playClickSound();
             document.getElementById('heatmapTooltip').innerHTML =
-              '<span class="text-white font-medium">' + readable + ': ' + (sec > 0 ? formatHoursMinsPlain(sec) : '0m') + '</span>' +
+              '<span class="theme-text-primary font-semibold">' + readable + ': ' + (sec > 0 ? formatHoursMinsPlain(sec) : '0m') + '</span>' +
               '<span class="accent-text font-semibold">' + Math.floor(sec / 1500) + ' Pomos</span>';
           });
 
           grid.appendChild(cell);
         }
 
-        // Fill remaining cells up to 375 (25x15 rectangle) with subtle dark cells
         for (let rem = dayCount; rem < 375; rem++) {
           const pad = document.createElement('div');
-          pad.className = 'year-grid-cell bg-[#1c1c1f] opacity-40';
+          pad.className = 'year-grid-cell heat-0 opacity-35';
           grid.appendChild(pad);
         }
       }
 
+      function triggerBackupDownload(prefix) {
+        const payload = JSON.stringify({ sessions, tasks: TASKS, settings: userSettings }, null, 2);
+        const blob = new Blob([payload], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = (prefix || 'teekteek_backup_') + toDateKey(new Date()) + '.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
+
       function exportRecordsCSV() {
-        const rows = [['Date', 'Task', 'Mode', 'Duration_Minutes']];
+        const rows = [['Date', 'Tag', 'Mode', 'Duration_Minutes']];
         sessions.forEach(s => {
           rows.push([
             new Date(s.timestamp).toISOString(),
@@ -1509,7 +1814,7 @@
         document.body.removeChild(link);
       }
 
-      // Bind All Interactive Event Listeners
+      // Bind Event Listeners
       document.getElementById('tabBtn-timer').addEventListener('click', () => switchTab('timer'));
       document.getElementById('tabBtn-stats').addEventListener('click', () => switchTab('stats'));
       document.getElementById('tabBtn-settings').addEventListener('click', () => switchTab('settings'));
@@ -1526,14 +1831,13 @@
         btn.addEventListener('click', () => setPomoMinutes(parseInt(btn.getAttribute('data-mins'), 10)));
       });
 
-      // Details Card Tabs & Arrows
       document.querySelectorAll('.det-tab-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           detailsRange = btn.getAttribute('data-det');
           detailsOffset = 0;
           document.querySelectorAll('.det-tab-btn').forEach(b => {
             b.className = 'det-tab-btn py-1.5 rounded-full cursor-pointer ' +
-              (b.getAttribute('data-det') === detailsRange ? 'accent-soft-bg accent-text font-semibold' : 'text-gray-500 font-medium');
+              (b.getAttribute('data-det') === detailsRange ? 'accent-soft-bg accent-text font-semibold' : 'theme-text-muted font-medium');
           });
           renderDetailsCard();
         });
@@ -1541,14 +1845,13 @@
       document.getElementById('detPrevBtn').addEventListener('click', () => { detailsOffset -= 1; renderDetailsCard(); });
       document.getElementById('detNextBtn').addEventListener('click', () => { detailsOffset += 1; renderDetailsCard(); });
 
-      // Trends Card Tabs & Arrows
       document.querySelectorAll('.trend-tab-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           trendRange = btn.getAttribute('data-trend');
           trendOffset = 0;
           document.querySelectorAll('.trend-tab-btn').forEach(b => {
             b.className = 'trend-tab-btn py-1.5 rounded-full cursor-pointer ' +
-              (b.getAttribute('data-trend') === trendRange ? 'accent-soft-bg accent-text font-semibold' : 'text-gray-500 font-medium');
+              (b.getAttribute('data-trend') === trendRange ? 'accent-soft-bg accent-text font-semibold' : 'theme-text-muted font-medium');
           });
           renderTrendsCard();
         });
@@ -1556,7 +1859,6 @@
       document.getElementById('trendPrevBtn').addEventListener('click', () => { trendOffset -= 1; renderTrendsCard(); });
       document.getElementById('trendNextBtn').addEventListener('click', () => { trendOffset += 1; renderTrendsCard(); });
 
-      // Timeline & Most Focused Time & Year Arrows
       document.getElementById('tlPrevBtn').addEventListener('click', () => { timelineWeekOffset -= 1; renderScheduleTimelineCard(); });
       document.getElementById('tlNextBtn').addEventListener('click', () => { timelineWeekOffset += 1; renderScheduleTimelineCard(); });
       document.getElementById('mftPrevBtn').addEventListener('click', () => { mftMonthOffset -= 1; renderMostFocusedTimeCard(); });
@@ -1564,25 +1866,19 @@
       document.getElementById('prevYearBtn').addEventListener('click', () => { selectedYear -= 1; renderYearGridsCard(); });
       document.getElementById('nextYearBtn').addEventListener('click', () => { selectedYear += 1; renderYearGridsCard(); });
 
-      // Modals
-      document.getElementById('openTaskBtn').addEventListener('click', () => document.getElementById('taskModal').classList.remove('hidden'));
-      document.getElementById('closeTaskModalBtn').addEventListener('click', () => document.getElementById('taskModal').classList.add('hidden'));
-      document.getElementById('addCustomTaskBtn').addEventListener('click', () => {
-        const input = document.getElementById('customTaskInput');
-        const name = (input.value || '').trim();
-        if (!name) return;
-        const palette = ['#ff3b30', '#ff9f0a', '#30d158', '#0a84ff', '#bf5af2', '#64d2ff', '#ff375f'];
-        const newTask = { name, color: palette[TASKS.length % palette.length] };
-        TASKS.push(newTask);
-        try { localStorage.setItem(TASKS_KEY, JSON.stringify(TASKS)); } catch (e) {}
-        currentTask = newTask;
-        document.getElementById('activeTaskDot').style.background = newTask.color;
-        document.getElementById('activeTaskLabel').textContent = newTask.name;
-        input.value = '';
+      // Tag Modal Listeners
+      const openTagModal = () => {
+        resetTagEditor();
         renderTaskOptions();
-        document.getElementById('taskModal').classList.add('hidden');
-      });
+        document.getElementById('taskModal').classList.remove('hidden');
+      };
+      document.getElementById('openTaskBtn').addEventListener('click', openTagModal);
+      document.getElementById('settingsManageTagsBtn').addEventListener('click', openTagModal);
+      document.getElementById('closeTaskModalBtn').addEventListener('click', () => document.getElementById('taskModal').classList.add('hidden'));
+      document.getElementById('cancelEditTagBtn').addEventListener('click', resetTagEditor);
+      document.getElementById('saveTagBtn').addEventListener('click', saveTagFromEditor);
 
+      // Manual Record Modal
       document.getElementById('manualAddBtn').addEventListener('click', () => {
         document.getElementById('manualDateInput').value = toDateKey(new Date());
         document.getElementById('manualModal').classList.remove('hidden');
@@ -1610,7 +1906,7 @@
         renderAllAnalytics();
       });
 
-      // Settings Listeners
+      // Display Mode Listeners (OLED / Dark Slate / Light Mode)
       document.getElementById('bgOledBtn').addEventListener('click', () => {
         userSettings.bgMode = 'oled';
         saveSettings();
@@ -1621,17 +1917,14 @@
         saveSettings();
         applyTheme();
       });
+      document.getElementById('bgLightBtn').addEventListener('click', () => {
+        userSettings.bgMode = 'light';
+        saveSettings();
+        applyTheme();
+      });
 
       document.getElementById('backupDownloadBtn').addEventListener('click', () => {
-        const payload = JSON.stringify({ sessions, tasks: TASKS, settings: userSettings }, null, 2);
-        const blob = new Blob([payload], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'teekteek_backup_' + toDateKey(new Date()) + '.json';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+        triggerBackupDownload('teekteek_backup_');
       });
 
       document.getElementById('backupUploadInput').addEventListener('change', (e) => {
@@ -1647,7 +1940,7 @@
             }
             if (Array.isArray(parsed.tasks)) {
               TASKS = parsed.tasks;
-              localStorage.setItem(TASKS_KEY, JSON.stringify(TASKS));
+              saveTasks();
             }
             if (parsed.settings) {
               userSettings = Object.assign(userSettings, parsed.settings);
@@ -1664,18 +1957,32 @@
         reader.readAsText(file);
       });
 
+      // Reset Confirmation Warning Window + Auto Backup Download
       document.getElementById('clearAllDataBtn').addEventListener('click', () => {
-        if (confirm('Reset all focus records to 0h 0m?')) {
-          sessions = [];
-          saveStorage();
-          updateMiniTodayCard();
-          renderAllAnalytics();
-        }
+        playClickSound();
+        document.getElementById('resetConfirmModal').classList.remove('hidden');
+      });
+      document.getElementById('cancelResetBtn').addEventListener('click', () => {
+        playClickSound();
+        document.getElementById('resetConfirmModal').classList.add('hidden');
+      });
+      document.getElementById('confirmResetBtn').addEventListener('click', () => {
+        playClickSound();
+        // Automatically download backup before resetting
+        triggerBackupDownload('teekteek_pre_reset_backup_');
+        sessions = [];
+        saveStorage();
+        updateMiniTodayCard();
+        renderAllAnalytics();
+        document.getElementById('resetConfirmModal').classList.add('hidden');
       });
 
-      // Initialize App
+      // Boot App
+      generateIllustratedAppIcon();
       applyTheme();
       renderTaskOptions();
+      document.getElementById('activeTaskDot').style.background = currentTask.color;
+      document.getElementById('activeTaskLabel').textContent = currentTask.name;
       updateTimerUI();
       updateMiniTodayCard();
     })();
